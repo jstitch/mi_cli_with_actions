@@ -40,3 +40,14 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+def reverse_text(text: str) -> str:
+    """Reverses the given text."""
+    return text[::-1]
+
+
+def is_palindrome(text: str) -> bool:
+    """Checks if the given text is a palindrome."""
+    cleaned = text.lower().replace(" ", "")
+    return cleaned == cleaned[::-1]
