@@ -1,5 +1,5 @@
 import sys
-import pytest
+
 from cli import greet, word_count
 
 
