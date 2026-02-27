@@ -85,3 +85,71 @@ def title_case(text: str) -> str:
         w if (i > 0 and w.lower() in small) else w.capitalize()
         for i, w in enumerate(words)
     )
+
+
+def password_strength(password: str) -> str:
+    """Evaluates the strength of a password."""
+    score = 0
+    if len(password) >= 8:
+        score += 1
+    if len(password) >= 12:
+        score += 1
+    if any(c.isupper() for c in password):
+        score += 1
+    if any(c.islower() for c in password):
+        score += 1
+    if any(c.isdigit() for c in password):
+        score += 1
+    if any(c in "!@#$%^&*()-_=+[]{}|;:,.<>?" for c in password):
+        score += 1
+    if score <= 2:
+        return "weak"
+    if score <= 4:
+        return "moderate"
+    return "strong"
+
+
+def slug(text: str) -> str:
+    """Converts text to a URL-friendly slug."""
+    import re
+    text = text.lower().strip()
+    text = re.sub(r"[^\w\s-]", "", text)
+    text = re.sub(r"[\s_-]+", "-", text)
+    text = re.sub(r"^-+|-+$", "", text)
+    return text
+
+
+def wrap_text(text: str, width: int) -> list[str]:
+    """Wraps text to lines of at most `width` characters."""
+    words = text.split()
+    lines: list[str] = []
+    current = ""
+    for word in words:
+        if not current:
+            current = word
+        elif len(current) + 1 + len(word) <= width:
+            current += " " + word
+        else:
+            lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+    return lines
+
+
+def levenshtein(s1: str, s2: str) -> int:
+    """Computes the Levenshtein edit distance between two strings."""
+    if len(s1) < len(s2):
+        return levenshtein(s2, s1)
+    if not s2:
+        return len(s1)
+    prev = list(range(len(s2) + 1))
+    for i, c1 in enumerate(s1):
+        curr = [i + 1]
+        for j, c2 in enumerate(s2):
+            insertions = prev[j + 1] + 1
+            deletions = curr[j] + 1
+            substitutions = prev[j] + (c1 != c2)
+            curr.append(min(insertions, deletions, substitutions))
+        prev = curr
+    return prev[-1]
