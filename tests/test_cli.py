@@ -5,10 +5,14 @@ from cli import (
     count_vowels,
     greet,
     is_palindrome,
+    levenshtein,
+    password_strength,
     reverse_text,
+    slug,
     title_case,
     truncate,
     word_count,
+    wrap_text,
 )
 
 
@@ -79,3 +83,55 @@ def test_truncate_long():
 
 def test_title_case():
     assert title_case("the lord of the rings") == "The Lord Of the Rings"
+
+
+def test_caesar_cipher_non_alpha():
+    assert caesar_cipher("hello, world!", 0) == "hello, world!"
+
+
+def test_password_strength_weak():
+    assert password_strength("abc") == "weak"
+
+
+def test_password_strength_moderate():
+    assert password_strength("Hello123") == "moderate"
+
+
+def test_password_strength_strong():
+    assert password_strength("Hello123!@#xyz") == "strong"
+
+
+def test_slug_basic():
+    assert slug("Hello World") == "hello-world"
+
+
+def test_slug_special_chars():
+    assert slug("  Hello, World!  ") == "hello-world"
+
+
+def test_wrap_text_fits():
+    assert wrap_text("hello world", 20) == ["hello world"]
+
+
+def test_wrap_text_wraps():
+    assert wrap_text("one two three", 7) == ["one two", "three"]
+
+
+def test_wrap_text_empty():
+    assert wrap_text("", 10) == []
+
+
+def test_levenshtein_equal():
+    assert levenshtein("abc", "abc") == 0
+
+
+def test_levenshtein_insert():
+    assert levenshtein("abc", "abcd") == 1
+
+
+def test_levenshtein_empty():
+    assert levenshtein("abc", "") == 3
+
+
+def test_levenshtein_swap():
+    assert levenshtein("kitten", "sitting") == 3
