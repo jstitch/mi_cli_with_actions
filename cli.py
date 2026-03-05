@@ -153,3 +153,75 @@ def levenshtein(s1: str, s2: str) -> int:
             curr.append(min(insertions, deletions, substitutions))
         prev = curr
     return prev[-1]
+
+
+def roman_to_int(s: str) -> int:
+    """Converts a Roman numeral string to an integer."""
+    values = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+    total = 0
+    prev = 0
+    for ch in reversed(s.upper()):
+        val = values.get(ch, 0)
+        if val < prev:
+            total -= val
+        else:
+            total += val
+        prev = val
+    return total
+
+
+def int_to_roman(num: int) -> str:
+    """Converts an integer to a Roman numeral string."""
+    val_map = [
+        (1000, "M"), (900, "CM"), (500, "D"), (400, "CD"),
+        (100, "C"), (90, "XC"), (50, "L"), (40, "XL"),
+        (10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I"),
+    ]
+    result = ""
+    for value, numeral in val_map:
+        while num >= value:
+            result += numeral
+            num -= value
+    return result
+
+
+def fizzbuzz(n: int) -> list[str]:
+    """Returns FizzBuzz sequence from 1 to n."""
+    output = []
+    for i in range(1, n + 1):
+        if i % 15 == 0:
+            output.append("FizzBuzz")
+        elif i % 3 == 0:
+            output.append("Fizz")
+        elif i % 5 == 0:
+            output.append("Buzz")
+        else:
+            output.append(str(i))
+    return output
+
+
+def flatten(nested: list) -> list:
+    """Flattens a nested list of arbitrary depth."""
+    result = []
+    for item in nested:
+        if isinstance(item, list):
+            result.extend(flatten(item))
+        else:
+            result.append(item)
+    return result
+
+
+def chunk(lst: list, size: int) -> list[list]:
+    """Splits a list into chunks of a given size."""
+    return [lst[i:i + size] for i in range(0, len(lst), size)]
+
+
+def deduplicate(lst: list) -> list:
+    """Removes duplicates from a list preserving order."""
+    seen = set()
+    result = []
+    for item in lst:
+        if item not in seen:
+            seen.add(item)
+            result.append(item)
+    return result
