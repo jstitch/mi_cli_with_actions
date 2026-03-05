@@ -225,3 +225,139 @@ def deduplicate(lst: list) -> list:
             seen.add(item)
             result.append(item)
     return result
+
+
+def is_prime(n: int) -> bool:
+    """Returns True if n is a prime number."""
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+    for i in range(3, int(n ** 0.5) + 1, 2):
+        if n % i == 0:
+            return False
+    return True
+
+
+def primes_up_to(n: int) -> list[int]:
+    """Returns all prime numbers up to n using the Sieve of Eratosthenes."""
+    if n < 2:
+        return []
+    sieve = [True] * (n + 1)
+    sieve[0] = sieve[1] = False
+    for i in range(2, int(n ** 0.5) + 1):
+        if sieve[i]:
+            for j in range(i * i, n + 1, i):
+                sieve[j] = False
+    return [i for i, is_p in enumerate(sieve) if is_p]
+
+
+def fibonacci(n: int) -> list[int]:
+    """Returns the first n Fibonacci numbers."""
+    if n <= 0:
+        return []
+    if n == 1:
+        return [0]
+    seq = [0, 1]
+    while len(seq) < n:
+        seq.append(seq[-1] + seq[-2])
+    return seq
+
+
+def matrix_multiply(a: list[list[float]], b: list[list[float]]) -> list[list[float]]:
+    """Multiplies two matrices a and b."""
+    rows_a, cols_a = len(a), len(a[0])
+    rows_b, cols_b = len(b), len(b[0])
+    if cols_a != rows_b:
+        raise ValueError("Incompatible matrix dimensions")
+    result = [[0.0] * cols_b for _ in range(rows_a)]
+    for i in range(rows_a):
+        for j in range(cols_b):
+            for k in range(cols_a):
+                result[i][j] += a[i][k] * b[k][j]
+    return result
+
+
+def transpose(matrix: list[list[float]]) -> list[list[float]]:
+    """Returns the transpose of a matrix."""
+    if not matrix:
+        return []
+    rows, cols = len(matrix), len(matrix[0])
+    return [[matrix[r][c] for r in range(rows)] for c in range(cols)]
+
+
+def binary_search(lst: list, target) -> int:
+    """Returns the index of target in sorted lst, or -1 if not found."""
+    lo, hi = 0, len(lst) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if lst[mid] == target:
+            return mid
+        elif lst[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1
+
+
+def merge_sort(lst: list) -> list:
+    """Sorts a list using merge sort and returns a new sorted list."""
+    if len(lst) <= 1:
+        return lst[:]
+    mid = len(lst) // 2
+    left = merge_sort(lst[:mid])
+    right = merge_sort(lst[mid:])
+    result = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+
+
+def group_by(lst: list, key_fn) -> dict:
+    """Groups list elements by the result of key_fn."""
+    groups: dict = {}
+    for item in lst:
+        k = key_fn(item)
+        groups.setdefault(k, []).append(item)
+    return groups
+
+
+def frequency_map(lst: list) -> dict:
+    """Returns a dict mapping each element to its count in lst."""
+    freq: dict = {}
+    for item in lst:
+        freq[item] = freq.get(item, 0) + 1
+    return freq
+
+
+def rotate_list(lst: list, k: int) -> list:
+    """Rotates list to the right by k positions."""
+    if not lst:
+        return []
+    k = k % len(lst)
+    return lst[-k:] + lst[:-k] if k else lst[:]
+
+
+def zip_with(fn, lst1: list, lst2: list) -> list:
+    """Applies fn element-wise to two lists and returns the results."""
+    return [fn(a, b) for a, b in zip(lst1, lst2)]
+
+
+def running_total(lst: list[float]) -> list[float]:
+    """Returns a list of running (cumulative) totals."""
+    totals = []
+    acc = 0.0
+    for x in lst:
+        acc += x
+        totals.append(acc)
+    return totals
